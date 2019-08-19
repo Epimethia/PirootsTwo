@@ -12,27 +12,52 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 m_vecVelocity = Vector3.zero;
     private Vector3 m_vecAcceleration = Vector3.zero;
     private Vector3 m_vecTarget = Vector3.zero;
-    Camera m_MainCamera;
+    public Camera m_MainCamera;
 
     private bool bClicked = false;
 
+    Rigidbody m_PlayerRigidBody;
     void Start(){
         if (Camera.main != null)
         {
             m_MainCamera = Camera.main;
         }
         m_vecTarget = transform.position;
+
+        m_PlayerRigidBody = GetComponent<Rigidbody>();
+        if (!m_PlayerRigidBody)
+        {
+            Debug.Log("No rigidBody");
+        }
     }
 
     void Update() 
     {
+        if (!m_PlayerRigidBody)
+        {
+            Debug.Log("No rigidBody");
+        }
+        if (Camera.main != null)
+        {
+            m_MainCamera = Camera.main;
+        }
         Debug.DrawLine(transform.position, transform.position + m_vecVelocity, Color.red);
         m_vecAcceleration = Vector3.zero;
         Vector3 vecDirection;
 
         
         //If the main camera is invalid or there are no keys being pressed, dont run update
-        if (!m_MainCamera || !Input.anyKey) return;
+        if (!m_MainCamera) 
+        {
+            Debug.Log("No Cam");
+            return;
+        } 
+        else if (!Input.anyKey) 
+        {
+            Debug.Log("No input");
+        }
+
+        
 
         bClicked = Input.GetMouseButton(0) ? true : false;
         
@@ -43,10 +68,10 @@ public class PlayerMovement : MonoBehaviour
             if(Physics.Raycast(ray, out hit, 1000000.0f))
             {
                 vecDirection = hit.point - transform.position;
+                vecDirection.y = 0.0f;
                 float fMagnitude = vecDirection.magnitude;
                 fMagnitude = Mathf.Clamp(fMagnitude, 0.0f, m_fMaxPlayerSpeed);
                 m_vecAcceleration = vecDirection.normalized * fMagnitude;
-                return;
             }
         } 
         else 
@@ -61,15 +86,23 @@ public class PlayerMovement : MonoBehaviour
             m_vecAcceleration = vecDirection * m_fMaxPlayerSpeed;
         }
 
-        
+        m_PlayerRigidBody.MoveRotation(Quaternion.LookRotation(m_vecVelocity.normalized));
+
+        // transform.position = Vector3.Lerp(transform.position, m_vecTarget, 50.0f * Time.deltaTime);
+
+        m_vecVelocity += m_vecAcceleration * m_fAccelerationRate;
+        m_vecVelocity = Vector3.ClampMagnitude(m_vecVelocity, m_fMaxPlayerSpeed);
+        transform.position += (m_vecVelocity * Time.deltaTime);
+
+        m_vecVelocity *= m_fDecelerationRate;
     }
 
     void FixedUpdate()
     {
-        m_vecVelocity += m_vecAcceleration * m_fAccelerationRate;
-        m_vecVelocity = Vector3.ClampMagnitude(m_vecVelocity, m_fMaxPlayerSpeed);
-        transform.position += m_vecVelocity * Time.deltaTime;
+        // m_vecVelocity += m_vecAcceleration * m_fAccelerationRate;
+        // m_vecVelocity = Vector3.ClampMagnitude(m_vecVelocity, m_fMaxPlayerSpeed);
+        // m_vecTarget = transform.position += (m_vecVelocity * Time.deltaTime);
 
-        m_vecVelocity *= m_fDecelerationRate;
+        // m_vecVelocity *= m_fDecelerationRate;
     }
 }
