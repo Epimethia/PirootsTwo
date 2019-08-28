@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -14,11 +15,15 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 m_vecTarget = Vector3.zero;
     public Camera m_MainCamera;
 
+    public bool bAnchorDropped;
+
+    private CameraFollow FollowScript;
+
     private bool bClicked = false;
 
     Rigidbody m_PlayerRigidBody;
     void Start(){
-        if (Camera.main != null)
+        if (Camera.main != null && m_MainCamera == null)
         {
             m_MainCamera = Camera.main;
         }
@@ -29,80 +34,93 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.Log("No rigidBody");
         }
+
+        FollowScript = m_MainCamera.GetComponent<CameraFollow>();
+        bAnchorDropped = false;
     }
 
-    void Update() 
+    void Update()
     {
-        if (!m_PlayerRigidBody)
-        {
-            Debug.Log("No rigidBody");
-        }
-        if (Camera.main != null)
-        {
-            m_MainCamera = Camera.main;
-        }
-        Debug.DrawLine(transform.position, transform.position + m_vecVelocity, Color.red);
         m_vecAcceleration = Vector3.zero;
+        ProcessPlayerMovement();
+        ProcessAcceleration();
+    }
+
+    private void ProcessPlayerMovement()
+    {
         Vector3 vecDirection;
 
-        
-        //If the main camera is invalid or there are no keys being pressed, dont run update
-        if (!m_MainCamera) 
-        {
-            Debug.Log("No Cam");
-            return;
-        } 
-        else if (!Input.anyKey) 
-        {
-            Debug.Log("No input");
-        }
+        if (bAnchorDropped == true) return;
 
-        
-
-        bClicked = Input.GetMouseButton(0) ? true : false;
-        
-        if (bClicked)
+        if (!EventSystem.current.IsPointerOverGameObject())
         {
-            Ray ray = m_MainCamera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if(Physics.Raycast(ray, out hit, 1000000.0f))
+            bClicked = Input.GetMouseButton(0) ? true : false;
+
+            if (bClicked)
             {
-                vecDirection = hit.point - transform.position;
-                vecDirection.y = 0.0f;
-                float fMagnitude = vecDirection.magnitude;
-                fMagnitude = Mathf.Clamp(fMagnitude, 0.0f, m_fMaxPlayerSpeed);
-                m_vecAcceleration = vecDirection.normalized * fMagnitude;
-            }
-        } 
-        else 
-        {
-            //Get the input from the game engine and calculating the desired target location for the player
-            float fHorizontalSpeed = Input.GetAxis("Horizontal");
-            float fVerticalSpeed = Input.GetAxis("Vertical");
-            Vector3 vecCameraForward2D = Vector3.Scale(m_MainCamera.transform.forward, new Vector3(1.0f, 0.0f, 1.0f));
-            Vector3 vecCameraRight2D = Vector3.Scale(m_MainCamera.transform.right, new Vector3(1.0f, 0.0f, 1.0f));
 
-            vecDirection = ((vecCameraForward2D * fVerticalSpeed) + (vecCameraRight2D * fHorizontalSpeed)).normalized;
-            m_vecAcceleration = vecDirection * m_fMaxPlayerSpeed;
+                Ray ray = m_MainCamera.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+
+                if (Physics.Raycast(ray, out hit, 1000000.0f, -5, QueryTriggerInteraction.Ignore))
+                {
+                    vecDirection = hit.point - transform.position;
+                    vecDirection.y = 0.0f;
+                    float fMagnitude = vecDirection.magnitude;
+                    fMagnitude = Mathf.Clamp(fMagnitude, 0.0f, m_fMaxPlayerSpeed);
+                    m_vecAcceleration = vecDirection.normalized * fMagnitude;
+                }
+            }
+            else
+            {
+                //Get the input from the game engine and calculating the desired target location for the player
+                float fHorizontalSpeed = Input.GetAxis("Horizontal");
+                float fVerticalSpeed = Input.GetAxis("Vertical");
+                Vector3 vecCameraForward2D = Vector3.Scale(m_MainCamera.transform.forward, new Vector3(1.0f, 0.0f, 1.0f));
+                Vector3 vecCameraRight2D = Vector3.Scale(m_MainCamera.transform.right, new Vector3(1.0f, 0.0f, 1.0f));
+
+                vecDirection = ((vecCameraForward2D * fVerticalSpeed) + (vecCameraRight2D * fHorizontalSpeed)).normalized;
+                m_vecAcceleration = vecDirection * m_fMaxPlayerSpeed;
+            }
         }
 
-        m_PlayerRigidBody.MoveRotation(Quaternion.LookRotation(m_vecVelocity.normalized));
+        if (m_vecVelocity.normalized.magnitude != 0.0)
+        {
+            m_PlayerRigidBody.MoveRotation(Quaternion.LookRotation(m_vecVelocity.normalized));
+        }
 
-        // transform.position = Vector3.Lerp(transform.position, m_vecTarget, 50.0f * Time.deltaTime);
+    }
 
+    private void ProcessAcceleration()
+    {
         m_vecVelocity += m_vecAcceleration * m_fAccelerationRate;
         m_vecVelocity = Vector3.ClampMagnitude(m_vecVelocity, m_fMaxPlayerSpeed);
         transform.position += (m_vecVelocity * Time.deltaTime);
 
-        m_vecVelocity *= m_fDecelerationRate;
+        if (bAnchorDropped == true) m_vecVelocity *= (m_fDecelerationRate / 1.1f);
+        else m_vecVelocity *= m_fDecelerationRate;
     }
 
-    void FixedUpdate()
+    private void OnTriggerEnter(Collider other)
     {
-        // m_vecVelocity += m_vecAcceleration * m_fAccelerationRate;
-        // m_vecVelocity = Vector3.ClampMagnitude(m_vecVelocity, m_fMaxPlayerSpeed);
-        // m_vecTarget = transform.position += (m_vecVelocity * Time.deltaTime);
+        if(other.gameObject.tag == "FishingSpot")
+        {
+            FollowScript.m_vecOffset = new Vector3(20.0f, 20.0f, 20.0f);
+            FollowScript.FollowObject = other.gameObject;
+        }
+    }
 
-        // m_vecVelocity *= m_fDecelerationRate;
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "FishingSpot")
+        {
+            FollowScript.m_vecOffset = new Vector3(10.0f, 10.0f, 10.0f);
+            FollowScript.FollowObject = gameObject;
+        }
+    }
+
+    public void DropAnchor()
+    {
+        bAnchorDropped = !bAnchorDropped;
     }
 }
