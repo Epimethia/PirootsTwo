@@ -1,0 +1,18 @@
+...
+0 StaticMesh(s) | 1 SkeletalMesh(s) | 0 Alembic(s) | 4 Animation(s) | 0 Camera(s) | 0 Other(s)
+
+[SkeletalMesh] -> "SK_Armature.fbx" exported in 0.046875 sec.
+D:\Repos\Piroots2\Other Files\ExportedFbx\SkeletalMesh\Armature
+
+[Animation](Action) -> "Anim_Armature_ArmatureAction000.fbx" exported in 0.390625 sec.
+D:\Repos\Piroots2\Other Files\ExportedFbx\SkeletalMesh\Armature\Anim
+
+[Animation](Action) -> "Anim_Armature_ArmatureAction001.fbx" exported in 0.671875 sec.
+D:\Repos\Piroots2\Other Files\ExportedFbx\SkeletalMesh\Armature\Anim
+
+[Animation](Action) -> "Anim_Armature_ArmatureAction002.fbx" exported in 0.625 sec.
+D:\Repos\Piroots2\Other Files\ExportedFbx\SkeletalMesh\Armature\Anim
+
+[Animation](Action) -> "Anim_Armature_ArmatureAction003.fbx" exported in 0.5625 sec.
+D:\Repos\Piroots2\Other Files\ExportedFbx\SkeletalMesh\Armature\Anim
+

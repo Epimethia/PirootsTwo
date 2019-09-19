@@ -46,4 +46,7 @@ MonoBehaviour:
   BoxSize: {x: 0, y: 0, z: 0}
   FishingSpot: {fileID: 8879139782126447375, guid: 9ad057c65b988724f92ae94b9050a38d,
     type: 3}
-  FishingSpots: []
+  CommonFishingSpots: []
+  UnCommonFishingSpots: []
+  RareFishingSpots: []
+  FishSpawnMask: {fileID: 2800000, guid: 20aa1e9275e06074488d0fb3f766cf7a, type: 3}

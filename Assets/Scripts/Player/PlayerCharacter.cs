@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerCharacter : MonoBehaviour
 {
 
     public float m_fMaxPlayerSpeed = 6.0f;
@@ -13,15 +13,16 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 m_vecVelocity = Vector3.zero;
     private Vector3 m_vecAcceleration = Vector3.zero;
     private Vector3 m_vecTarget = Vector3.zero;
-    public Camera m_MainCamera;
-
-    public bool bAnchorDropped;
-
-    private CameraFollow FollowScript;
-
     private bool bClicked = false;
+    public bool bAnchorDropped = false;
 
-    Rigidbody m_PlayerRigidBody;
+    public Camera m_MainCamera;
+    private Rigidbody m_PlayerRigidBody;
+    private CameraFollow CameraFollowScript;
+    public GameObject CurrentFishingSpot;
+
+    public EDamageType m_PlayerDamageType = EDamageType.NONE;
+    
     void Start(){
         if (Camera.main != null && m_MainCamera == null)
         {
@@ -35,7 +36,7 @@ public class PlayerMovement : MonoBehaviour
             Debug.Log("No rigidBody");
         }
 
-        FollowScript = m_MainCamera.GetComponent<CameraFollow>();
+        CameraFollowScript = m_MainCamera.GetComponent<CameraFollow>();
         bAnchorDropped = false;
     }
 
@@ -105,8 +106,10 @@ public class PlayerMovement : MonoBehaviour
     {
         if(other.gameObject.tag == "FishingSpot")
         {
-            FollowScript.m_vecOffset = new Vector3(20.0f, 20.0f, 20.0f);
-            FollowScript.FollowObject = other.gameObject;
+            CameraFollowScript.m_vecOffset = new Vector3(20.0f, 20.0f, 20.0f);
+            CameraFollowScript.FollowObject = other.gameObject;
+
+            CurrentFishingSpot = other.gameObject;
         }
     }
 
@@ -114,13 +117,11 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.gameObject.tag == "FishingSpot")
         {
-            FollowScript.m_vecOffset = new Vector3(10.0f, 10.0f, 10.0f);
-            FollowScript.FollowObject = gameObject;
+            CameraFollowScript.m_vecOffset = new Vector3(10.0f, 10.0f, 10.0f);
+            CameraFollowScript.FollowObject = gameObject;
+
+            CurrentFishingSpot = null;
         }
     }
 
-    public void DropAnchor()
-    {
-        bAnchorDropped = !bAnchorDropped;
-    }
 }
