@@ -106,9 +106,8 @@ public class PlayerCharacter : MonoBehaviour
     {
         if(other.gameObject.tag == "FishingSpot")
         {
-            CameraFollowScript.m_vecOffset = new Vector3(20.0f, 20.0f, 20.0f);
+            CameraFollowScript.ZoomAmount = 2.0f;
             CameraFollowScript.FollowObject = other.gameObject;
-
             CurrentFishingSpot = other.gameObject;
         }
     }
@@ -117,7 +116,7 @@ public class PlayerCharacter : MonoBehaviour
     {
         if (other.gameObject.tag == "FishingSpot")
         {
-            CameraFollowScript.m_vecOffset = new Vector3(10.0f, 10.0f, 10.0f);
+            CameraFollowScript.ZoomAmount = 1.0f;
             CameraFollowScript.FollowObject = gameObject;
 
             CurrentFishingSpot = null;

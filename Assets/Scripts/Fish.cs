@@ -17,7 +17,7 @@ public class Fish : MonoBehaviour
     public Image HealthBar;
     public GameObject m_ParticleSystemPrefab;
     public EFishGrade m_Grade = EFishGrade.COMMON;
-    public float m_Health = 1000.0f;
+    public float m_Health = 100.0f;
     public float m_MinWeight = 0.0f;
     public float m_MaxWeight = 0.0f;
     public float m_Weight = 0.0f;
@@ -81,7 +81,6 @@ public class Fish : MonoBehaviour
 
     public void Die() 
     {
-        Destroy(m_ParentFishingSpot);
-        Destroy(gameObject);
+        m_ParentFishingSpot.DestroyFishingSpot();
     }
 }

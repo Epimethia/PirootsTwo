@@ -35,7 +35,7 @@ MonoBehaviour:
   HealthBar: {fileID: 6136483522070232107}
   m_ParticleSystemPrefab: {fileID: 2310213048352361805}
   m_Grade: 0
-  m_Health: 1000
+  m_Health: 100
   m_MinWeight: 1.5
   m_MaxWeight: 4
   m_Weight: 0
@@ -364,32 +364,32 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 0.429
       objectReference: {fileID: 0}
-    - target: {fileID: 6838148417235579158, guid: 6e0efe72fe1ee134eae7e3286ef399e3,
+    - target: {fileID: 434959916341479227, guid: 6e0efe72fe1ee134eae7e3286ef399e3,
         type: 3}
       propertyPath: FollowObject
       value: 
       objectReference: {fileID: 3358487025875663245}
-    - target: {fileID: 6838148417235579158, guid: 6e0efe72fe1ee134eae7e3286ef399e3,
+    - target: {fileID: 434959916341479227, guid: 6e0efe72fe1ee134eae7e3286ef399e3,
         type: 3}
       propertyPath: OffsetValue.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 6838148417235579158, guid: 6e0efe72fe1ee134eae7e3286ef399e3,
+    - target: {fileID: 434959916341479227, guid: 6e0efe72fe1ee134eae7e3286ef399e3,
         type: 3}
       propertyPath: FaceCamera
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 434959916341479227, guid: 6e0efe72fe1ee134eae7e3286ef399e3,
+    - target: {fileID: 6838148417235579158, guid: 6e0efe72fe1ee134eae7e3286ef399e3,
         type: 3}
       propertyPath: FollowObject
       value: 
       objectReference: {fileID: 3358487025875663245}
-    - target: {fileID: 434959916341479227, guid: 6e0efe72fe1ee134eae7e3286ef399e3,
+    - target: {fileID: 6838148417235579158, guid: 6e0efe72fe1ee134eae7e3286ef399e3,
         type: 3}
       propertyPath: OffsetValue.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 434959916341479227, guid: 6e0efe72fe1ee134eae7e3286ef399e3,
+    - target: {fileID: 6838148417235579158, guid: 6e0efe72fe1ee134eae7e3286ef399e3,
         type: 3}
       propertyPath: FaceCamera
       value: 1

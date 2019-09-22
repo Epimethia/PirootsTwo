@@ -2,11 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
+
 public enum EDamageType {
     NONE,
     LEFT,
     RIGHT,
     PULL
+}
+
+[System.Serializable]
+public class GameObjectEvent : UnityEvent<GameObject>
+{
 }
 
 public class FishingSpot : MonoBehaviour
@@ -29,16 +36,26 @@ public class FishingSpot : MonoBehaviour
     
     public float MinSpawnTime = 5.0f;
     public float  MaxSpawnTime = 10.0f;
+    [SerializeField] 
     private float SpawnTimer = 0.0f;
 
-    private float DespawnTime = 0.0f;
+    public float DespawnTime = 10.0f;
+    
+    [SerializeField] 
     private float DespawnTimer = 0.0f;
+
+    [SerializeField] 
+    private float TimeSinceActivation = 0.0f;
 
     public float MaxDamageDuration = 3.0f;
     private float CurrentDamageDuration = 0.0f;
     public float PullDamageValue = 10.0f;
     public float LeftDamageValue = 2.0f;
     public float RightDamageValue = 2.0f;
+
+    private bool PlayerPresent = false;
+
+    public GameObjectEvent DestructionEvent;
 
     private void Awake()
     {
@@ -50,11 +67,69 @@ public class FishingSpot : MonoBehaviour
     void Start()
     {
         Indicator.enabled = false;
+        if (DestructionEvent == null)
+        {
+            DestructionEvent = new GameObjectEvent();
+        }
     }
 
     void Update()
     {
+        
+        if(spawnedFish != null) 
+        {
+            if(PlayerPresent == true && DespawnTimer != 0.0f)
+            {
+                DespawnTimer = 0.0f;
+            }
+            else if (PlayerPresent == false)
+            {
+                DespawnTimer += Time.deltaTime;
+                if(DespawnTimer >= DespawnTime)
+                {
+                    DestroyFishingSpot();
+                }
+            }
+        }
 
+        else if(PlayerPresent == true)
+        {
+            if(TimeSinceActivation >= SpawnTimer)
+            {
+                //if the TimeSinceActivation is over the spawn time, spawn a fish.
+                GameObject fishType = FishTypes[Random.Range(0, 7)];
+                spawnedFish = GameObject.Instantiate(fishType, transform.position - new Vector3(0.0f, 1.5f, 0.0f), Quaternion.identity);
+                Fish fishingScript = spawnedFish.GetComponent<Fish>();
+
+                if(fishingScript) 
+                {
+                    fishingScript.m_ParentFishingSpot = this;
+                }
+                Indicator.enabled = true;
+
+                //Break out of the coroutine and stop its execution
+                return;
+            }
+            else
+            {
+                //Otherwise if the TimeSinceActivation is not over the spawn time yet, increment it 
+                //by delta time
+                TimeSinceActivation += Time.deltaTime;
+            }
+        }
+        else
+        {
+            //Otherwise decrement the TimeSinceActivation back down to zero
+            if (TimeSinceActivation > 0.0f)
+            {
+                TimeSinceActivation -= Time.deltaTime;
+            }
+            else
+            {
+                TimeSinceActivation = 0.0f;
+                //break out of the coroutine since we dont want it to run anymore once it reaches zero
+            }
+        }
     }
 
     void FixedUpdate() 
@@ -72,17 +147,8 @@ public class FishingSpot : MonoBehaviour
 
     IEnumerator SpawnFish()
     {
-        yield return new WaitForSecondsRealtime(SpawnTimer);
-
-        GameObject fishType = FishTypes[Random.Range(0, 7)];
-        spawnedFish = GameObject.Instantiate(fishType, transform.position - new Vector3(0.0f, 1.5f, 0.0f), Quaternion.identity);
-        Fish fishingScript = spawnedFish.GetComponent<Fish>();
-
-        if(fishingScript) 
-        {
-            fishingScript.m_ParentFishingSpot = this;
-        }
-        Indicator.enabled = true;
+        
+        yield break;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -90,6 +156,7 @@ public class FishingSpot : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             rend.material.SetFloat("Vector1_E4BA77E7", 1.0f);
+            PlayerPresent = true;
 
             if (!spawnedFish) 
             {
@@ -102,6 +169,7 @@ public class FishingSpot : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            PlayerPresent = false;
             rend.material.SetFloat("Vector1_E4BA77E7", 0.0f);
         }
     }
@@ -160,5 +228,18 @@ public class FishingSpot : MonoBehaviour
         else {
             FishPS.Stop();
         }
+    }
+
+    void OnDestroy()
+    {
+        CameraFollow CameraFollowScript = Camera.main.GetComponent<CameraFollow>();
+        CameraFollowScript.FollowObject = GameObject.Find("Player");
+    }
+
+
+    public void DestroyFishingSpot()
+    {
+        Destroy(spawnedFish);
+        DestructionEvent.Invoke(this.gameObject);
     }
 }

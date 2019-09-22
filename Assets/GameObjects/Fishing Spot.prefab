@@ -312,7 +312,16 @@ MonoBehaviour:
   Indicator: {fileID: 1953447279803844553}
   MinSpawnTime: 10
   MaxSpawnTime: 15
+  SpawnTimer: 0
+  DespawnTime: 5
+  DespawnTimer: 0
+  TimeSinceActivation: 0
   MaxDamageDuration: 3
   PullDamageValue: 10
   LeftDamageValue: 2
   RightDamageValue: 2
+  DestructionEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: GameObjectEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null

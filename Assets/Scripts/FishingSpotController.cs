@@ -11,35 +11,24 @@ public class FishingSpotController : MonoBehaviour
     public List<GameObject> RareFishingSpots;
     private float SpawnTime;
     public Texture2D FishSpawnMask;
+    private float ConversionRatio;
 
     // Start is called before the first frame update
     void Start()
     {
         //Going to assume that the box size is equal in all directions
-        float ConversionRatio = (BoxSize.x) / FishSpawnMask.width;
+        ConversionRatio = (BoxSize.x) / FishSpawnMask.width;
 
-        // for (int i = 0; i < FishSpawnMask.width; i++)
-        // {
-        //     for (int j = 0; j < FishSpawnMask.height; j++)
-        //     {
-        //         Vector3 SpawnPoint;
-        //         SpawnPoint.x = (i * ConversionRatio) - (BoxSize.x/2.0f);
-        //         SpawnPoint.y = 20.0f;
-        //         SpawnPoint.z = (j * ConversionRatio) - (BoxSize.x/2.0f);
+        while (CommonFishingSpots.Count < 10)
+        {
+            SpawnFishingSpot();
+        }
+    }
 
-        //         int x = Mathf.FloorToInt(SpawnPoint.x);
-        //         int z = Mathf.FloorToInt(SpawnPoint.z);
-        //         bool CanSpawn = FishSpawnMask.GetPixel(i , j).r > 0? true: false;
-
-        //         if (CanSpawn) 
-        //         {
-        //             GameObject TempFishingSpot = Instantiate(FishingSpot, SpawnPoint, Quaternion.Euler(-90.0f, 0.0f, 0.0f));
-        //             CommonFishingSpots.Add(TempFishingSpot);
-        //         }
-        //     } 
-        // }   
-
-        while (CommonFishingSpots.Count < 200)
+    void SpawnFishingSpot()
+    {
+        bool CanSpawn = false;
+        while (CanSpawn == false)
         {
             Vector2 TexturePoint;
             TexturePoint.x = Random.Range(0, FishSpawnMask.width);
@@ -47,32 +36,51 @@ public class FishingSpotController : MonoBehaviour
 
             int x = Mathf.FloorToInt(TexturePoint.x);
             int y = Mathf.FloorToInt(TexturePoint.y);
-            bool CanSpawn = FishSpawnMask.GetPixel(x , y).r > 0? true: false;
-            
+            CanSpawn = FishSpawnMask.GetPixel(x , y).r > 0? true: false;
+
             Vector3 vSpawnPoint;
             vSpawnPoint.x = (TexturePoint.x * ConversionRatio) - BoxSize.x/2.0f;
             vSpawnPoint.y = 20.0f;
             vSpawnPoint.z = (TexturePoint.y * ConversionRatio) - BoxSize.x/2.0f;
 
-            if (CanSpawn) 
+            bool InRange = false;
+
+            for(int i = 0; i < CommonFishingSpots.Count; i++)
+            {
+                if (Vector3.Distance(CommonFishingSpots[i].transform.position, vSpawnPoint) < 50.0f)
+                {
+                    InRange = true;
+                    CanSpawn = false;
+                    break;
+                }
+            }
+
+            if (CanSpawn == true && InRange == false) 
             {
                 GameObject TempFishingSpot = Instantiate(FishingSpot, vSpawnPoint, Quaternion.Euler(-90.0f, 0.0f, 0.0f));
+                TempFishingSpot.GetComponent<FishingSpot>().DestructionEvent.AddListener(DestroyFishingSpot);
                 CommonFishingSpots.Add(TempFishingSpot);
             }
-            
         }
+        
     }
 
-    // Update is called once per frame
-    void Update()
+    void DestroyFishingSpot(GameObject _FishingSpotRef)
     {
-        
+
+        if(CommonFishingSpots.Remove(_FishingSpotRef))
+        {
+            Destroy(_FishingSpotRef);
+        }
+        SpawnFishingSpot();
     }
 
     void OnDrawGizmosSelected()
     {
-        // Draw a semitransparent blue cube at the transforms position
-        Gizmos.color = new Color(1, 0, 0, 0.5f);
+        // Draw a semitransparent red cube at the transforms position
+        Gizmos.color = new Color(1, 0, 0, 0.1f);
         Gizmos.DrawCube(transform.position, BoxSize);
     }
+
+   
 }
