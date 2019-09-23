@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shader Graphs_New Shader Graph
+  m_Name: M_HurtVFX
   m_Shader: {fileID: -6465566751694194690, guid: eb37a4324c8626f4588b40e8ab240384,
     type: 3}
   m_ShaderKeywords: 

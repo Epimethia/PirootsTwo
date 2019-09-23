@@ -5,21 +5,20 @@ using UnityEngine;
 public class FishingSpotController : MonoBehaviour
 {
     public Vector3 BoxSize;
-    public GameObject FishingSpot;
-    public List<GameObject> CommonFishingSpots;
-    public List<GameObject> UnCommonFishingSpots;
-    public List<GameObject> RareFishingSpots;
-    private float SpawnTime;
     public Texture2D FishSpawnMask;
     private float ConversionRatio;
+
+    public GameObject FishingSpot;
+    public List<GameObject> FishingSpotList;
+    private float SpawnTime;
 
     // Start is called before the first frame update
     void Start()
     {
         //Going to assume that the box size is equal in all directions
         ConversionRatio = (BoxSize.x) / FishSpawnMask.width;
-
-        while (CommonFishingSpots.Count < 10)
+        //Spawn 10 fishing spots
+        while (FishingSpotList.Count < 10)
         {
             SpawnFishingSpot();
         }
@@ -30,24 +29,27 @@ public class FishingSpotController : MonoBehaviour
         bool CanSpawn = false;
         while (CanSpawn == false)
         {
+            //Sample a random pixel in the fishing mask texture
             Vector2 TexturePoint;
             TexturePoint.x = Random.Range(0, FishSpawnMask.width);
             TexturePoint.y = Random.Range(0, FishSpawnMask.height);
 
+            //Check if the pixel is more than zero. If so, we can spawn a fish at that location.
             int x = Mathf.FloorToInt(TexturePoint.x);
             int y = Mathf.FloorToInt(TexturePoint.y);
             CanSpawn = FishSpawnMask.GetPixel(x , y).r > 0? true: false;
 
+            //Convert the pixel location to world location
             Vector3 vSpawnPoint;
             vSpawnPoint.x = (TexturePoint.x * ConversionRatio) - BoxSize.x/2.0f;
             vSpawnPoint.y = 20.0f;
             vSpawnPoint.z = (TexturePoint.y * ConversionRatio) - BoxSize.x/2.0f;
 
+            //Check if the fishing spot is in range of any other fishing spots. If so, retry the spawn again
             bool InRange = false;
-
-            for(int i = 0; i < CommonFishingSpots.Count; i++)
+            for(int i = 0; i < FishingSpotList.Count; i++)
             {
-                if (Vector3.Distance(CommonFishingSpots[i].transform.position, vSpawnPoint) < 50.0f)
+                if (Vector3.Distance(FishingSpotList[i].transform.position, vSpawnPoint) < 50.0f)
                 {
                     InRange = true;
                     CanSpawn = false;
@@ -55,11 +57,13 @@ public class FishingSpotController : MonoBehaviour
                 }
             }
 
+            //Otherwise, spawn the fishing spot
             if (CanSpawn == true && InRange == false) 
             {
                 GameObject TempFishingSpot = Instantiate(FishingSpot, vSpawnPoint, Quaternion.Euler(-90.0f, 0.0f, 0.0f));
                 TempFishingSpot.GetComponent<FishingSpot>().DestructionEvent.AddListener(DestroyFishingSpot);
-                CommonFishingSpots.Add(TempFishingSpot);
+                TempFishingSpot.GetComponent<FishingSpot>().FishingEventSuccessful.AddListener(FishingEvent);
+                FishingSpotList.Add(TempFishingSpot);
             }
         }
         
@@ -67,12 +71,16 @@ public class FishingSpotController : MonoBehaviour
 
     void DestroyFishingSpot(GameObject _FishingSpotRef)
     {
-
-        if(CommonFishingSpots.Remove(_FishingSpotRef))
+        if(FishingSpotList.Remove(_FishingSpotRef))
         {
             Destroy(_FishingSpotRef);
         }
         SpawnFishingSpot();
+    }
+
+    void FishingEvent(Fish _Fish)
+    {
+        
     }
 
     void OnDrawGizmosSelected()
@@ -81,6 +89,4 @@ public class FishingSpotController : MonoBehaviour
         Gizmos.color = new Color(1, 0, 0, 0.1f);
         Gizmos.DrawCube(transform.position, BoxSize);
     }
-
-   
 }

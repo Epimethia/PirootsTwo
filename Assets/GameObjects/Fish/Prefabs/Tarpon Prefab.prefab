@@ -39,6 +39,7 @@ MonoBehaviour:
   m_MinWeight: 22
   m_MaxWeight: 108
   m_Weight: 0
+  m_FishType: 4
 --- !u!1001 &1399706728435591438
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -211,6 +212,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.2
       objectReference: {fileID: 0}
+    - target: {fileID: 4443316589264651075, guid: 85040542d043a0649a6322116bf6cd70,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c6787fe9da3968447a6e863871da653c, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 85040542d043a0649a6322116bf6cd70, type: 3}
 --- !u!1 &3734344714728633883 stripped

@@ -3,14 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum EFishGrade 
+{
+    COMMON,
+    RARE,
+    EXOTIC
+}
+
+public enum EFishType
+{
+    BLUEFISH = 0,
+    COD,
+    STRIPED_BASS,
+    SWORDFISH,
+    TARPON,
+    TUNA,
+    YELLOWTAIL
+}
+
 public class Fish : MonoBehaviour
 {
-    public enum EFishGrade 
-    {
-        COMMON,
-        RARE,
-        EXOTIC
-    }
+
     public FishingSpot m_ParentFishingSpot;
     private Animator m_Animator;
 
@@ -21,6 +34,8 @@ public class Fish : MonoBehaviour
     public float m_MinWeight = 0.0f;
     public float m_MaxWeight = 0.0f;
     public float m_Weight = 0.0f;
+
+    public EFishType m_FishType;
     
     void Start()
     {

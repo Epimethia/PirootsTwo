@@ -43,4 +43,9 @@ public class UIManagerScript : MonoBehaviour
     {
         PlayerCharacterScript.bAnchorDropped = ! PlayerCharacterScript.bAnchorDropped;
     }
+
+    public void FishSuccessful(Fish _FishScript)
+    {
+        
+    }
 }

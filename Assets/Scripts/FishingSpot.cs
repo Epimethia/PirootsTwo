@@ -12,9 +12,10 @@ public enum EDamageType {
 }
 
 [System.Serializable]
-public class GameObjectEvent : UnityEvent<GameObject>
-{
-}
+public class GameObjectEvent : UnityEvent<GameObject> {}
+
+[System.Serializable]
+public class FishingSpotEvent : UnityEvent<Fish> {}
 
 public class FishingSpot : MonoBehaviour
 {
@@ -40,7 +41,6 @@ public class FishingSpot : MonoBehaviour
     private float SpawnTimer = 0.0f;
 
     public float DespawnTime = 10.0f;
-    
     [SerializeField] 
     private float DespawnTimer = 0.0f;
 
@@ -56,6 +56,7 @@ public class FishingSpot : MonoBehaviour
     private bool PlayerPresent = false;
 
     public GameObjectEvent DestructionEvent;
+    public FishingSpotEvent FishingEventSuccessful;
 
     private void Awake()
     {
@@ -70,6 +71,10 @@ public class FishingSpot : MonoBehaviour
         if (DestructionEvent == null)
         {
             DestructionEvent = new GameObjectEvent();
+        }
+        if(FishingEventSuccessful == null)
+        {
+            FishingEventSuccessful = new FishingSpotEvent();
         }
     }
 
@@ -235,7 +240,6 @@ public class FishingSpot : MonoBehaviour
         CameraFollow CameraFollowScript = Camera.main.GetComponent<CameraFollow>();
         CameraFollowScript.FollowObject = GameObject.Find("Player");
     }
-
 
     public void DestroyFishingSpot()
     {
