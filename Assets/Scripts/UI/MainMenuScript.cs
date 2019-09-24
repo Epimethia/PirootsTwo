@@ -13,6 +13,14 @@ public class MainMenuScript : MonoBehaviour
     public void OnQuitButtonPressed()
     {
         Debug.Log("Application Quit");
+        int PreviousHighScore = PlayerPrefs.GetInt("PreviousHighScore");
+        int CurrentScore = PlayerPrefs.GetInt("CurrentScore");
+
+        if(CurrentScore > PreviousHighScore)
+        {
+            PlayerPrefs.SetInt("PreviousHighScore", CurrentScore);
+            PlayerPrefs.SetInt("CurrentScore", 0);
+        }
         Application.Quit();
     }
 }

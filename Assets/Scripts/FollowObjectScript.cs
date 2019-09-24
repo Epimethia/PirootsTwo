@@ -25,5 +25,6 @@ public class FollowObjectScript : MonoBehaviour
                 transform.LookAt(transform.position + m_Camera.transform.rotation * Vector3.back, m_Camera.transform.rotation * Vector3.up);
             }
         }
+        
     }
 }

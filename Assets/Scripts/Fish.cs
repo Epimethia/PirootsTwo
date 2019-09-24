@@ -26,7 +26,6 @@ public class Fish : MonoBehaviour
 
     public FishingSpot m_ParentFishingSpot;
     private Animator m_Animator;
-
     public Image HealthBar;
     public GameObject m_ParticleSystemPrefab;
     public EFishGrade m_Grade = EFishGrade.COMMON;
@@ -34,6 +33,7 @@ public class Fish : MonoBehaviour
     public float m_MinWeight = 0.0f;
     public float m_MaxWeight = 0.0f;
     public float m_Weight = 0.0f;
+    public float m_MaxScore = 0;
 
     public EFishType m_FishType;
     
@@ -97,5 +97,12 @@ public class Fish : MonoBehaviour
     public void Die() 
     {
         m_ParentFishingSpot.DestroyFishingSpot();
+    }
+
+    public int GenerateScore()
+    {
+        int Score = 0;
+        Score = Mathf.FloorToInt(m_MaxScore * (m_Weight / m_MaxWeight));
+        return Score;
     }
 }

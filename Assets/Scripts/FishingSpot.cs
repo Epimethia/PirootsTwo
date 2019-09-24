@@ -15,7 +15,7 @@ public enum EDamageType {
 public class GameObjectEvent : UnityEvent<GameObject> {}
 
 [System.Serializable]
-public class FishingSpotEvent : UnityEvent<Fish> {}
+public class FishingSpotEvent : UnityEvent<Fish, int> {}
 
 public class FishingSpot : MonoBehaviour
 {
@@ -237,13 +237,24 @@ public class FishingSpot : MonoBehaviour
 
     void OnDestroy()
     {
+        if (Camera.main == null) return;
         CameraFollow CameraFollowScript = Camera.main.GetComponent<CameraFollow>();
-        CameraFollowScript.FollowObject = GameObject.Find("Player");
+        if(CameraFollowScript != null)
+        {
+            GameObject Player = GameObject.Find("Player");
+            if(Player != null)
+            {
+                CameraFollowScript.FollowObject = Player;
+            }
+        }
     }
 
     public void DestroyFishingSpot()
     {
         Destroy(spawnedFish);
         DestructionEvent.Invoke(this.gameObject);
+        Fish ThisFish = spawnedFish.GetComponent<Fish>();
+        int Score = ThisFish.GenerateScore();
+        FishingEventSuccessful.Invoke(ThisFish, Score);
     }
 }

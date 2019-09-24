@@ -35,10 +35,11 @@ MonoBehaviour:
   HealthBar: {fileID: 3437820936736733851}
   m_ParticleSystemPrefab: {fileID: 5888391400755004465}
   m_Grade: 0
-  m_Health: 100
+  m_Health: 10
   m_MinWeight: 190
   m_MaxWeight: 700
   m_Weight: 0
+  m_MaxScore: 150
   m_FishType: 3
 --- !u!1001 &869536377558207483
 PrefabInstance:

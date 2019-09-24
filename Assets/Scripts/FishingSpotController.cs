@@ -11,6 +11,8 @@ public class FishingSpotController : MonoBehaviour
     public GameObject FishingSpot;
     public List<GameObject> FishingSpotList;
     private float SpawnTime;
+    public FishSuccessScript FishingSuccessPopup;
+
 
     // Start is called before the first frame update
     void Start()
@@ -42,7 +44,7 @@ public class FishingSpotController : MonoBehaviour
             //Convert the pixel location to world location
             Vector3 vSpawnPoint;
             vSpawnPoint.x = (TexturePoint.x * ConversionRatio) - BoxSize.x/2.0f;
-            vSpawnPoint.y = 20.0f;
+            vSpawnPoint.y = 15.0f;
             vSpawnPoint.z = (TexturePoint.y * ConversionRatio) - BoxSize.x/2.0f;
 
             //Check if the fishing spot is in range of any other fishing spots. If so, retry the spawn again
@@ -60,13 +62,12 @@ public class FishingSpotController : MonoBehaviour
             //Otherwise, spawn the fishing spot
             if (CanSpawn == true && InRange == false) 
             {
-                GameObject TempFishingSpot = Instantiate(FishingSpot, vSpawnPoint, Quaternion.Euler(-90.0f, 0.0f, 0.0f));
+                GameObject TempFishingSpot = Instantiate(FishingSpot, vSpawnPoint, Quaternion.Euler(0.0f, 0.0f, 0.0f));
                 TempFishingSpot.GetComponent<FishingSpot>().DestructionEvent.AddListener(DestroyFishingSpot);
                 TempFishingSpot.GetComponent<FishingSpot>().FishingEventSuccessful.AddListener(FishingEvent);
                 FishingSpotList.Add(TempFishingSpot);
             }
         }
-        
     }
 
     void DestroyFishingSpot(GameObject _FishingSpotRef)
@@ -78,9 +79,14 @@ public class FishingSpotController : MonoBehaviour
         SpawnFishingSpot();
     }
 
-    void FishingEvent(Fish _Fish)
+    void FishingEvent(Fish _Fish, int _Score)
     {
-        
+        int CurrentScore = PlayerPrefs.GetInt("CurrentScore");
+        CurrentScore += _Score;
+        PlayerPrefs.SetInt("CurrentScore", CurrentScore);
+        Debug.Log(CurrentScore);
+        FishingSuccessPopup.Init(_Fish);
+        FishingSuccessPopup.PopIn();
     }
 
     void OnDrawGizmosSelected()
@@ -89,4 +95,5 @@ public class FishingSpotController : MonoBehaviour
         Gizmos.color = new Color(1, 0, 0, 0.1f);
         Gizmos.DrawCube(transform.position, BoxSize);
     }
+
 }
