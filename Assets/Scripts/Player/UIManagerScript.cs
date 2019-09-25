@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Advertisements;
 
+#if UNITY_ANDROID
+using UnityEngine.Advertisements;
+#endif
 
 public class UIManagerScript : MonoBehaviour
 {
@@ -65,6 +67,7 @@ public class UIManagerScript : MonoBehaviour
 
     public void ShowAd()
     {
+        #if UNITY_ANDROID
         const string PlacementID = "video";
         if(Advertisement.IsReady())
         {
@@ -72,5 +75,6 @@ public class UIManagerScript : MonoBehaviour
             Advertisement.Show(PlacementID);
             Debug.Log("Showed Ad");
         }
+        #endif
     }
 }

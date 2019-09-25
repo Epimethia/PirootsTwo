@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 using TwitterKit.Unity;
-using UnityEngine.UI;
 
 public class TwitterDemo : MonoBehaviour
 {
-	public Image iconImage;
+	void Start ()
+	{
+	}
+
 	public void startLogin() {
 		UnityEngine.Debug.Log ("startLogin()");
 		// To set API key navigate to tools->Twitter Kit
@@ -28,13 +30,11 @@ public class TwitterDemo : MonoBehaviour
 	}
 	
 	public void LoginCompleteWithCompose(TwitterSession session) {
-		string imageUri = "file:///" + Application.persistentDataPath + "/Piroots.png";
-		
-		Twitter.Compose (session, imageUri, "I caught a massive fish! Come play :D ", new string[]{"#PirootsoftheCurrybean"},
+		string imageUri = "";
+		Twitter.Compose (session, imageUri, "Welcome to", new string[]{"#TwitterKitUnity"},
 			(string tweetId) => { UnityEngine.Debug.Log ("Tweet Success, tweetId=" + tweetId); },
 			(ApiError error) => { UnityEngine.Debug.Log ("Tweet Failed " + error.message); },
 			() => { Debug.Log ("Compose cancelled"); }
 		 );
-
 	}
 }

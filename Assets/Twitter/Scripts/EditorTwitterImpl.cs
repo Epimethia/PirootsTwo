@@ -15,7 +15,7 @@
  *
  */
 
-#if UNITY_EDITOR
+
 namespace TwitterKit.Internal
 {
 	using TwitterKit.Unity;
@@ -62,4 +62,4 @@ namespace TwitterKit.Internal
 		}
 	}
 }
-#endif
+
