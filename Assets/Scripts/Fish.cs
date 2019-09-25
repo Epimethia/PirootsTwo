@@ -30,6 +30,7 @@ public class Fish : MonoBehaviour
     public GameObject m_ParticleSystemPrefab;
     public EFishGrade m_Grade = EFishGrade.COMMON;
     public float m_Health = 100.0f;
+    public float m_MaxHealth = 100.0f;
     public float m_MinWeight = 0.0f;
     public float m_MaxWeight = 0.0f;
     public float m_Weight = 0.0f;
@@ -91,7 +92,7 @@ public class Fish : MonoBehaviour
             return;
         }
 
-        HealthBar.fillAmount = m_Health / 1000.0f;
+        HealthBar.fillAmount = m_Health / m_MaxHealth;
     }
 
     public void Die() 

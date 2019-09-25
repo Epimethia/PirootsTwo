@@ -7,8 +7,108 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: B2
+    second: {fileID: 2100000, guid: 0536642a39417ae48968b205c4733cfa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: BE1
     second: {fileID: 2100000, guid: 49dab2f8af146754aafd30075e0eb31f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BK1
+    second: {fileID: 2100000, guid: f5ef311c95b329b4d9e6f5bb6636ca5e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BN
+    second: {fileID: 2100000, guid: 650eb8feccf83624d9841ef3c6399334, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BN2
+    second: {fileID: 2100000, guid: d8a8af25a0181ea46a50507e1ffcc094, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: G2
+    second: {fileID: 2100000, guid: 6afd8f5b58db9f94f9a3392d8d1fe961, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GN1
+    second: {fileID: 2100000, guid: f517f34fceea4a244994fe00e5638a9b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GN3
+    second: {fileID: 2100000, guid: 11146ce1951c96445977be4e2906dfb9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GN4
+    second: {fileID: 2100000, guid: 6b503f48d4ab58844b70c4813a4fa1a0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GY1
+    second: {fileID: 2100000, guid: 47e6d47ebc796354298386b8378311b7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GY2
+    second: {fileID: 2100000, guid: 6fed66985a3787646ac98fd86149a60e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GY3
+    second: {fileID: 2100000, guid: e6f70ce02104440429760b121ada5d0b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LP1
+    second: {fileID: 2100000, guid: 996b1a24ffcba374fb9ab2160d2d3c2d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LP2
+    second: {fileID: 2100000, guid: aa39c1a8859ff914681659478b6efcfa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: OR1
+    second: {fileID: 2100000, guid: 5a8e5ee83616c2845823a318cde87c43, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: PK
+    second: {fileID: 2100000, guid: b53a9a5938da47e41b93b27808c56275, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: PK2
+    second: {fileID: 2100000, guid: 071391267e860584a9bda6808f256443, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: WE1
+    second: {fileID: 2100000, guid: f80f177003170d94b8c1e25ea8ec93b0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: WE2
+    second: {fileID: 2100000, guid: be350f4295b1fcd4680b2ae1ef5ee357, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: YW1
+    second: {fileID: 2100000, guid: 5f719d3f4d05ce845a355bb07efb82b0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: YW2
+    second: {fileID: 2100000, guid: 5f719d3f4d05ce845a355bb07efb82b0, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -46,8 +146,8 @@ ModelImporter:
     sortHierarchyByName: 1
     importVisibility: 1
     importBlendShapes: 1
-    importCameras: 1
-    importLights: 1
+    importCameras: 0
+    importLights: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1

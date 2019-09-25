@@ -12,7 +12,8 @@ public class FishingSpotController : MonoBehaviour
     public List<GameObject> FishingSpotList;
     private float SpawnTime;
     public FishSuccessScript FishingSuccessPopup;
-
+    
+    public UIManagerScript UIManagerObj;
 
     // Start is called before the first frame update
     void Start()
@@ -85,6 +86,18 @@ public class FishingSpotController : MonoBehaviour
         CurrentScore += _Score;
         PlayerPrefs.SetInt("CurrentScore", CurrentScore);
         Debug.Log(CurrentScore);
+
+        int AdCount = PlayerPrefs.GetInt("CurrentAdCount");
+        if(AdCount > 2)
+        {
+            UIManagerObj.ShowAd();
+            PlayerPrefs.SetInt("CurrentAdCount", 0);
+        }  
+        else
+        {
+            PlayerPrefs.SetInt("CurrentAdCount", ++AdCount);
+        };
+
         FishingSuccessPopup.Init(_Fish);
         FishingSuccessPopup.PopIn();
     }

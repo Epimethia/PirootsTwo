@@ -21,6 +21,7 @@ public class MainMenuScript : MonoBehaviour
             PlayerPrefs.SetInt("PreviousHighScore", CurrentScore);
             PlayerPrefs.SetInt("CurrentScore", 0);
         }
+        PlayerPrefs.SetInt("CurrentAdCount", 0);
         Application.Quit();
     }
 }

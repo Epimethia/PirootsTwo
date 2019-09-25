@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Advertisements;
+
 
 public class UIManagerScript : MonoBehaviour
 {
@@ -56,23 +58,19 @@ public class UIManagerScript : MonoBehaviour
         }
     }
 
-    
     public void DropAnchor()
     {
         PlayerCharacterScript.bAnchorDropped = ! PlayerCharacterScript.bAnchorDropped;
     }
 
-    public void Pause()
+    public void ShowAd()
     {
-    }
-
-    public void Unpause()
-    {
-
-    }
-
-    public void Quit()
-    {
-
+        const string PlacementID = "video";
+        if(Advertisement.IsReady())
+        {
+            //Doesnt really matter if the player watches the video or not
+            Advertisement.Show(PlacementID);
+            Debug.Log("Showed Ad");
+        }
     }
 }

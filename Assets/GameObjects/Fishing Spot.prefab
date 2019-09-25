@@ -95,7 +95,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FollowObject: {fileID: 8879139782126447375}
-  OffsetValue: {x: 0, y: 12.5, z: 0}
+  OffsetValue: {x: 0, y: 15, z: 0}
   FaceCamera: 1
 --- !u!1 &6071755769825557632
 GameObject:

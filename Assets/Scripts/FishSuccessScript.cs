@@ -67,7 +67,9 @@ public class FishSuccessScript : MonoBehaviour
 
     private string GetFishText(EFishType _Type)
     {
-        return _Type.ToString();
+        String GradeString = _Type.ToString();
+        GradeString = GradeString.Replace("_", " ");
+        return GradeString;
     }
 
     private Color GetFishRarityColor(EFishGrade _FishGrade)
